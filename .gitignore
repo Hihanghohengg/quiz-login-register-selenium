@@ -1,7 +1,7 @@
 __pycache__/
 .pytest_cache/
 .venv/
-index.php
+/index.php
 artifacts/*
 !artifacts/.gitkeep
 *.pyc
