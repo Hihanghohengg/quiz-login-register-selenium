@@ -2,18 +2,6 @@
 
 Repository ini merupakan jawaban tugas pengujian untuk aplikasi PHP/MySQL `hermanka/quiz-pengupil`. Solusi menggunakan Selenium WebDriver (Python), pytest, Page Object Model, MySQL test fixture, test stub untuk halaman tujuan redirect, dan GitHub Actions.
 
-## Link
-
-- Repository aplikasi asal: `https://github.com/hermanka/quiz-pengupil`
-- Repository hasil Anda setelah diunggah: `https://github.com/USERNAME_ANDA/quiz-login-register-selenium`
-
-## Dokumen Pengumpulan
-
-- PDF final: `docs/Laporan_Pengujian_Selenium_Login_Register.pdf`
-- DOCX editable: `docs/Laporan_Pengujian_Selenium_Login_Register.docx`
-
-Sebelum dikumpulkan, ganti `[ISI NAMA]`, `[ISI NIM]`, `[ISI KELAS]`, dan `USERNAME_ANDA` pada dokumen. Setelah repository diunggah, cantumkan URL GitHub aktual pada halaman sampul.
-
 ## Struktur
 
 ```text
@@ -68,12 +56,6 @@ Aktivasi Windows:
 .venv\Scripts\activate
 ```
 
-Aktivasi Linux/macOS:
-
-```bash
-source .venv/bin/activate
-```
-
 ### 3. Dependency
 
 ```bash
@@ -81,17 +63,6 @@ pip install -r requirements.txt
 ```
 
 ### 4. Environment variables
-
-Linux/macOS:
-
-```bash
-export DB_HOST=127.0.0.1
-export DB_PORT=3306
-export DB_USER=root
-export DB_PASSWORD=''
-export DB_NAME=quiz_pengupil
-export BASE_URL=http://127.0.0.1:8000
-```
 
 PowerShell:
 
@@ -105,12 +76,6 @@ $env:BASE_URL='http://127.0.0.1:8000'
 ```
 
 ### 5. Install stub dan jalankan aplikasi
-
-Linux/macOS:
-
-```bash
-./scripts/start-local.sh
-```
 
 Windows PowerShell:
 
