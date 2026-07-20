@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+.venv/
+index.php
+artifacts/*
+!artifacts/.gitkeep
+*.pyc
+.DS_Store

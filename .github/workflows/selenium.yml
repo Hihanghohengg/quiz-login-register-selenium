@@ -1,0 +1,86 @@
+name: Selenium Login Register Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  selenium-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: quiz_pengupil
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: quiz_pengupil
+      BASE_URL: http://127.0.0.1:8000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Show browser and driver versions
+        run: |
+          google-chrome --version
+          chromedriver --version
+          php --version
+
+      - name: Prepare database
+        run: mysql --protocol=tcp -h 127.0.0.1 -P 3306 -uroot -proot < db/quiz_pengupil.sql
+
+      - name: Install test stub
+        run: cp tests/stubs/index.php index.php
+
+      - name: Start PHP application
+        run: |
+          php -d display_errors=0 -S 127.0.0.1:8000 > artifacts/php-server.log 2>&1 &
+          echo $! > artifacts/php-server.pid
+          for i in {1..30}; do
+            if curl --silent --fail http://127.0.0.1:8000/login.php > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/php-server.log
+          exit 1
+
+      - name: Run Selenium tests
+        run: |
+          pytest --junitxml=artifacts/junit.xml
+
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-test-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 14
